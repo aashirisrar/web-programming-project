@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  username        String?   @unique
+  bio             String?
+  theme           String?   @default("light")
+  backgroundColor String?   @default("#ffffff")
+  textColor       String?   @default("#000000")
+
+  apiLimit   UserApiLimit?
+  accounts   Account[]
+  links      Link[]
+  LinksHubbs LinksHubb[]
+}
+
+model UserApiLimit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  credits   Int      @default(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model UserSubscription {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String    @unique
+  polarCustomerId       String?   @unique @map(name: "polar_customer_id")
+  polarSubscriptionId   String?   @unique @map(name: "polar_subscription_id")
+  polarProductId        String?   @map(name: "polar_product_id")
+  polarCurrentPeriodEnd DateTime? @map(name: "polar_current_period_end")
+}
+
+model Link {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String          @db.ObjectId
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  url       String
+  position  Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  analytics LinkAnalytics[]
+
+  @@index([userId])
+}
+
+model LinkAnalytics {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  linkId        String    @db.ObjectId
+  link          Link      @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  clickCount    Int       @default(0)
+  lastClickedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([linkId])
+}
+
+model LinksHubb {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @db.ObjectId
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectName     String
+  clientName      String
+  startDate       String
+  endDate         String
+  summary         String    @db.String
+  objectives      String[]
+  scopeInclusions String[]
+  scopeExclusions String[]
+  methodology     String[]
+  timeline        Json
+  budget          Json
+  risks           Json
+  team            Json
+  outcomes        String[]
+  callToAction    String    @db.String
+  companyName     String?
+  preparedBy      String?
+  contactInfo     Json
+  theme           String?   @default("professional") // Theme for LinksHubb styling
+  images          Json?
+  status          String?   @default("Submitted") // Status can be: "Submitted", "Interviewed", "Hired", "Rejected"
+  statusDate      DateTime? @default(now()) // Date when the status was last updated
+  statusNotes     String?   @db.String // Optional notes about the status change
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+}
