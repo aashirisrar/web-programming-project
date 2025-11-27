@@ -38,21 +38,39 @@ Linkshubb is a modern link-management platform where users can create, organize,
 linkshubb/
 │
 ├── app/
+│   ├── (dashboard)/
+│   │   └── (routes)/
+│   │       ├── profile/       → Profile management
+│   │       └── settings/      → Account settings
+│   │
+│   ├── (landing)/             → Landing page
+│   │
+│   ├── [username]/            → Public profile dynamic route
+│   │
+│   ├── actions/               → Server Actions
+│   │   ├── getCurrentUser.ts
+│   │   ├── getSubscription.ts
+│   │   └── getUserByUsername.ts
+│   │
 │   ├── api/
-│   │   ├── auth/          → NextAuth routes
-│   │   └── links/         → CRUD API handlers
-│   ├── dashboard/         → Authenticated user UI
-│   └── [username]/        → Public profile pages
+│   │   ├── auth/[...nextauth]/
+│   │   ├── links/
+│   │   │   ├── [linkId]/
+│   │   │   │   ├── click/     → Click tracking
+│   │   │   │   └── route.ts   → CRUD for specific link
+│   │   │   └── reorder/       → Drag-and-drop reordering
+│   │   ├── polar/             → Analytics integration
+│   │   ├── register/          → User registration
+│   │   └── s3-upload/         → Image uploads
+│   │
+│   ├── hooks/                 → Custom React hooks
+│   ├── providers/             → Context providers (Toast, Modal, etc.)
+│   └── globals.css
 │
-├── components/            → Reusable UI components
-├── lib/
-│   ├── auth.ts            → NextAuth config
-│   └── db.ts              → Prisma client
-│
-├── prisma/
-│   └── schema.prisma      → Prisma models
-│
-└── public/                → Assets / screenshots
+├── components/                → Reusable UI components
+├── constants/                 → Static data & config
+├── lib/                       → Utils, DB connection, Auth config
+└── public/                    → Static assets
 ```
 
 ---
@@ -124,6 +142,7 @@ App will run at: `http://localhost:3000`
 - `POST   /api/links`            → Create a new link
 - `PUT    /api/links/:id`        → Update a link by ID
 - `DELETE /api/links/:id`        → Delete a link by ID
+- `PATCH  /api/links/reorder`    → Update link order
 
 ### Public Profile
 - `GET /api/public/:username`     → Fetch links for a public user profile
@@ -133,15 +152,10 @@ App will run at: `http://localhost:3000`
 ## 🖼️ Screenshots
 
 **Dashboard:**
-![Dashboard Screenshot](public/screenshots/dashboard-placeholder.png)
+![Dashboard Screenshot](public/imges/dashboard-preview.png)
 
-**Public Profile Page:**
-![Profile Screenshot](public/screenshots/profile-placeholder.png)
-
-**Mobile View:**
-![Mobile Screenshot](public/screenshots/mobile-placeholder.png)
-
-*(Add more screenshots in `/public/screenshots` as needed)*
+**Analytics Page:**
+![Analytics Screenshot](public/screenshots/analytics-preview.png)
 
 ---
 
@@ -167,12 +181,3 @@ The project is deployed on Vercel:
 ## 📄 License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
-## 💡 Notes
-
-- Make sure MongoDB Atlas is configured and accessible.
-- For OAuth, configure GitHub and Google apps and copy client IDs and secrets.
-- Screenshots are stored in `/public/screenshots`; update them with your own visuals.
-- The project uses Next.js 14 App Router, so all API routes are under `/app/api`.
