@@ -52,7 +52,7 @@ export default async function ProfilePage() {
 
   // Redirect to username setup if no username set
   if (!user.username) {
-    redirect("/username");
+    redirect("/settings");
   }
 
   return (
