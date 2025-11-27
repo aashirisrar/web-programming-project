@@ -1,10 +1,14 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+
 import prisma from "@/lib/prismadb";
+
 import { ProfileEditor } from "@/components/links/ProfileEditor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import EmptyState from "@/components/EmptyState";
+import { PublicProfile } from "@/components/links/PublicProfile";
+
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
+import { getUserByUsername } from "@/app/actions/getUserByUsername";
 
 export default async function ProfilePage() {
   const currentUser = await getCurrentUser();
@@ -18,6 +22,8 @@ export default async function ProfilePage() {
       />
     );
   }
+
+  const profile = await getUserByUsername(currentUser.username!!);
 
   const user = await prisma.user.findUnique({
     where: {
@@ -48,7 +54,7 @@ export default async function ProfilePage() {
   if (!user.username) {
     redirect("/username");
   }
-  
+
   return (
     <div className="container mx-auto py-8 px-4 md:px-8 max-w-6xl">
       <h1 className="text-3xl font-bold mb-8">Profile Settings</h1>
@@ -63,11 +69,7 @@ export default async function ProfilePage() {
           </CardHeader>
           <CardContent>
             <div className="border rounded-md overflow-hidden h-[500px]">
-              <iframe
-                src={`/${user.username}`}
-                className="w-full h-full"
-                title="Profile Preview"
-              />
+              <PublicProfile profile={profile!!} />
             </div>
           </CardContent>
         </Card>
