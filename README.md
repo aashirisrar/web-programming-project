@@ -106,7 +106,7 @@ NEXT_PUBLIC_APP_URL=
 
 POLAR_ACCESS_TOKEN=
 POLAR_PRODUCT_ID=
-POLAR_SUCCESS_URL=http://localhost:3000/settings
+POLAR_SUCCESS_URL=
 
 # S3 Configuration for next-s3-upload
 S3_UPLOAD_KEY=
@@ -152,10 +152,10 @@ App will run at: `http://localhost:3000`
 ## 🖼️ Screenshots
 
 **Dashboard:**
-![Dashboard Screenshot](public/imges/dashboard-preview.png)
+![Dashboard Screenshot](public/images/dashboard-preview.png)
 
 **Analytics Page:**
-![Analytics Screenshot](public/screenshots/analytics-preview.png)
+![Analytics Screenshot](public/images/analytics-preview.png)
 
 ---
 
