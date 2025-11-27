@@ -5,12 +5,14 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 import Heading from "./HeroHeading";
 import Button from "./ButtonRed";
+import { SubscriptionButton } from "./subscription-button";
 
 interface EmptyStateProps {
   title?: string;
   subtitle?: string;
   showLogin?: boolean;
   showRegister?: boolean;
+  showPro?: boolean
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
@@ -18,6 +20,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   subtitle = "Try changing or removing some of your filters",
   showLogin,
   showRegister,
+  showPro
 }) => {
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
@@ -35,6 +38,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({
             label="Sign Up"
             onClick={() => registerModal.onOpen()}
           />
+        )}
+        {showPro && (<div className="flex items-center justify-center">
+          <SubscriptionButton isPro={!showPro} />
+        </div>
         )}
       </div>
     </div>

@@ -1,14 +1,19 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prismadb";
+
 import { AppearanceClient } from "@/components/links/AppearanceClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import EmptyState from "@/components/EmptyState";
+import { PublicProfile } from "@/components/links/PublicProfile";
+
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { getUserByUsername } from "@/app/actions/getUserByUsername";
-import { PublicProfile } from "@/components/links/PublicProfile";
+
+import { getSubscription } from "@/app/actions/getSubscription";
 
 export default async function AppearancePage() {
   const currentUser = await getCurrentUser();
+  const isPro = await getSubscription();
 
   if (!currentUser) {
     return (
@@ -19,6 +24,14 @@ export default async function AppearancePage() {
       />
     );
   }
+
+  if (!isPro) return (
+    <EmptyState
+      title="No premium subscription found."
+      subtitle="Please upgrade to premium continue."
+      showPro={!isPro}
+    />
+  );
 
   const profile = await getUserByUsername(currentUser.username!!);
 

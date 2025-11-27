@@ -1,13 +1,18 @@
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prismadb";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle } from "lucide-react";
+
+import prisma from "@/lib/prismadb";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import EmptyState from "@/components/EmptyState";
 
+import { getSubscription } from "@/app/actions/getSubscription";
+
 export default async function AnalyticsPage() {
   const currentUser = await getCurrentUser();
+  const isPro = await getSubscription();
 
   if (!currentUser) {
     return (
@@ -18,6 +23,14 @@ export default async function AnalyticsPage() {
       />
     );
   }
+
+  if (!isPro) return (
+    <EmptyState
+      title="No premium subscription found."
+      subtitle="Please upgrade to premium continue."
+      showPro={!isPro}
+    />
+  );
 
   const user = await prisma.user.findUnique({
     where: {
