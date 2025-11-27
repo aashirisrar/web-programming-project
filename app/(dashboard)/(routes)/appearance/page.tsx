@@ -4,6 +4,8 @@ import { AppearanceClient } from "@/components/links/AppearanceClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import EmptyState from "@/components/EmptyState";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
+import { getUserByUsername } from "@/app/actions/getUserByUsername";
+import { PublicProfile } from "@/components/links/PublicProfile";
 
 export default async function AppearancePage() {
   const currentUser = await getCurrentUser();
@@ -17,6 +19,8 @@ export default async function AppearancePage() {
       />
     );
   }
+
+  const profile = await getUserByUsername(currentUser.username!!);
 
   const user = await prisma.user.findUnique({
     where: {
@@ -64,11 +68,7 @@ export default async function AppearancePage() {
             </CardHeader>
             <CardContent>
               <div className="border rounded-md overflow-hidden h-[500px]">
-                <iframe
-                  src={`/${user.username}`}
-                  className="w-full h-full"
-                  title="Profile Preview"
-                />
+                <PublicProfile profile={profile!!} />
               </div>
             </CardContent>
           </Card>
