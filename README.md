@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-blue)](https://linkshubb.vercel.app)
 
-Linkshubb is a modern link-management platform where users can create, organize, and share personalized link profiles — similar to Linktree but cleaner, faster, and fully customizable.
+Linkshubb is a modern link-management platform where users can create, organize, and share personalized link profiles, similar to Linktree but cleaner, faster, and fully customizable.
 
 **Live Demo:** [https://linkshubb.vercel.app](https://linkshubb.vercel.app)
 
