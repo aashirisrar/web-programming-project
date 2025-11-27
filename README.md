@@ -79,7 +79,7 @@ linkshubb/
 
 ### **1. Clone the repository**
 ```bash
-git clone [https://github.com/yourname/linkshubb.git](https://github.com/yourname/linkshubb.git)
+git clone [https://github.com/aashirisrar/web-programming-project.git](https://github.com/aashirisrar/web-programming-project.git)
 cd linkshubb
 ```
 
@@ -133,7 +133,6 @@ App will run at: `http://localhost:3000`
 ## 🔌 API Endpoints
 
 ### Authentication (NextAuth)
-- `GET /api/auth/session`
 - `POST /api/auth/signin`
 - `POST /api/auth/signout`
 
