@@ -13,7 +13,6 @@ import { useSidebar } from "@/components/ui/sidebar"
 import { SafeUser } from "@/types"
 import { Coins, Zap } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CreditsCounter } from "../credits-counter"
 
 interface NavProModalProps {
     currentUser?: SafeUser | null
@@ -44,7 +43,6 @@ export function NavProModal({ currentUser, isPro, credits }: NavProModalProps) {
 
     return (
         <>
-            <CreditsCounter isPro={isPro} credits={credits} />
             {currentUser && !isPro && (
                 <Card className="shadow-none">
                     <CardHeader className="p-4">
